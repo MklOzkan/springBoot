@@ -6,6 +6,8 @@ import com.tpe.exception.ConflictException;
 import com.tpe.exception.ResourceNotFound;
 import com.tpe.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -41,16 +43,26 @@ public class StudentService {
 
 
     public void updateStudent(Long id, StudentDTO studentDTO) {
+        //first check student with id exist
         Student student = findStudentById(id);
+        //check if provided email exists in BD
+        //and if email is going to be changed, email should not be one which is in DB
         boolean isEmailExist = repository.existsByEmail(studentDTO.getEmail());
-        if (isEmailExist&& !studentDTO.getEmail().equals(student.getEmail())){
+
+        if(isEmailExist && !studentDTO.getEmail().equals(student.getEmail())){
             throw new ConflictException("Email exists already");
         }
+        //map studentDTO to student
+        student.setEmail(studentDTO.getEmail());
         student.setName(studentDTO.getName());
         student.setLastName(studentDTO.getLastName());
         student.setGrade(studentDTO.getGrade());
         student.setPhoneNumber(studentDTO.getPhoneNumber());
-        student.setEmail(studentDTO.getEmail());
         repository.save(student);
+    }
+
+    public Page<Student> getAllStudentByPAge(Pageable pageable) {
+
+        return repository.findAll(pageable);
     }
 }

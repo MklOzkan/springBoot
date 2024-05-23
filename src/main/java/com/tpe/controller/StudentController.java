@@ -5,6 +5,10 @@ import com.tpe.dto.StudentDTO;
 import com.tpe.service.StudentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -72,6 +76,19 @@ public class StudentController {
         service.updateStudent(id, studentDTO);
         String message = "Student is updated successfully";
         return ResponseEntity.ok(message);
+    }
+
+    //method to get student by pagination + GET
+    @GetMapping("/page")
+    public ResponseEntity<Page<Student>> getStudentByPage(
+            @RequestParam("page") int page,
+            @RequestParam("size") int size,
+            @RequestParam("sort") String prop,
+            @RequestParam("direction")Sort.Direction direction
+            ){
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, prop));
+        Page<Student> studentPage =service.getAllStudentByPAge(pageable);
+        return ResponseEntity.ok(studentPage);
     }
 
 }
