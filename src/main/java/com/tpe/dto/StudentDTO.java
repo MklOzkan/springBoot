@@ -1,6 +1,7 @@
 package com.tpe.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.tpe.domain.Student;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,7 +24,7 @@ public class StudentDTO {
 
     @NotNull(message = "Name muss not be empty")
     @Size(min = 3, max = 30, message = "first name '${validatedValue}' must be between {min} and {max} characters")
-    private String name;
+    private String firstName;
     private String lastName;
     private Integer grade;
     private String phoneNumber;
@@ -32,4 +33,15 @@ public class StudentDTO {
     private String email;
 
     private LocalDateTime createdDate = LocalDateTime.now();
+
+    public StudentDTO(Student student){
+        this.id = student.getId();
+        this.firstName = student.getName();
+        this.lastName = student.getLastName();
+        this.grade = student.getGrade();
+        this.phoneNumber = student.getPhoneNumber();
+        this.email = student.getEmail();
+        this.createdDate = student.getCreatedDate();
+
+    }
 }

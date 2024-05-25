@@ -54,15 +54,29 @@ public class StudentService {
         }
         //map studentDTO to student
         student.setEmail(studentDTO.getEmail());
-        student.setName(studentDTO.getName());
+        student.setName(studentDTO.getFirstName());
         student.setLastName(studentDTO.getLastName());
         student.setGrade(studentDTO.getGrade());
         student.setPhoneNumber(studentDTO.getPhoneNumber());
         repository.save(student);
     }
 
-    public Page<Student> getAllStudentByPAge(Pageable pageable) {
+    public Page<Student> getAllStudentByPage(Pageable pageable) {
 
         return repository.findAll(pageable);
+    }
+
+    public List<Student> findStudentByField(String lastName) {
+
+        return repository.findByLastName(lastName);
+    }
+
+    public List<Student> findStudentByGrade(Integer grade) {
+        return repository.findByGradeUsingSQL(grade);
+    }
+
+    public StudentDTO findStudentDTOById(Long id) {
+        return repository.findStudentDTOById(id).orElseThrow(()->
+                new ResourceNotFound("No Student found with " + id));
     }
 }

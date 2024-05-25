@@ -12,6 +12,8 @@ import lombok.*;
 //import javax.validation.constraints.Pattern;
 //import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -38,5 +40,8 @@ public class Student {
     @Setter(AccessLevel.NONE)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss", timezone = "US")
     private LocalDateTime createdDate = LocalDateTime.now();
+
+    @OneToMany(mappedBy = "student")
+    private List<Book> books = new ArrayList<>();
 
 }
