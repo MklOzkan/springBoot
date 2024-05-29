@@ -42,6 +42,10 @@
 #    include-stacktrace: never
 
 spring:
+  security:
+    user:
+      name: mikail
+      password: 123456
   datasource:
     url: jdbc:postgresql://localhost:5432/spring_boot_intro
     username: dev_user
